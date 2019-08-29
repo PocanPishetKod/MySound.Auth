@@ -1,0 +1,17 @@
+Добавление начальных мираций:
+
+dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Migrations/IdentityServer/PersistedGrantDb
+
+dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Migrations/IdentityServer/ConfigurationDb
+
+Миграцию в этот контекст добавлять из стартап проекта открытого в терминале
+dotnet ef migrations add InitialIdentityMigration -c AuthDbContext -o Migrations/IdentityServer/Auth --project ../MySound.Auth.EF/MySound.Auth.EF.csproj
+
+Выполнение миграций:
+
+dotnet ef database update -c PersistedGrantDbContext
+
+dotnet ef database update -c ConfigurationDbContext
+
+Тоже выполнять из стартап проекта открытого в терминале
+dotnet ef database update -c AuthDbContext -p ../MySound.Auth.EF/MySound.Auth.EF.csproj

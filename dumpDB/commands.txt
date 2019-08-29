@@ -1,0 +1,18 @@
+Это команда создания резервного копирования базы данных:
+sudo docker exec -it mysound_auth_mssql /opt/mssql-tools/bin/sqlcmd \
+   -S localhost -U SA -P 'Vfhcbr1234567890' \
+   -Q "BACKUP DATABASE [MySound.Auth.Db] TO DISK = N'/var/opt/mssql/backup/backup.bak' WITH NOFORMAT, NOINIT, NAME = 'MySound.Auth.Db', SKIP, NOREWIND, NOUNLOAD, STATS = 10"
+
+Команда копирования резервной копи из контейнера(выполняется из папки, в которую сохраняется копия. в этом проекте это папка: dumpDB):
+sudo docker cp mysound_auth_mssql:/var/opt/mssql/backup/backup.bak backup.bak
+
+Список логических имен файлов и путей внутр резервной копии:
+sudo docker exec -it mysound_auth_mssql /opt/mssql-tools/bin/sqlcmd -S localhost \
+   -U SA -P 'Vfhcbr1234567890' \
+   -Q 'RESTORE FILELISTONLY FROM DISK = "/var/opt/mssql/backup/backup.bak"' \
+   | tr -s ' ' | cut -d ' ' -f 1-2
+
+Команда восстановление базы данных внутри контейнера:
+sudo docker exec -it mysound_auth_mssql /opt/mssql-tools/bin/sqlcmd \
+   -S localhost -U SA -P 'Vfhcbr1234567890' \
+   -Q 'RESTORE DATABASE [MySound.Auth.Db] FROM DISK = "/var/opt/mssql/backup/backup.bak" WITH MOVE "MySound.Auth.Db" TO "/var/opt/mssql/data/MySound.Auth.Db.mdf", MOVE "MySound.Auth.Db_log" TO "/var/opt/mssql/data/MySound.Auth.Db_log.ldf"'
