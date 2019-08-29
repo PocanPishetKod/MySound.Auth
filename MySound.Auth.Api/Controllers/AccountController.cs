@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MySound.Auth.Api.ViewModels.Account;
@@ -22,21 +23,22 @@ namespace MySound.Auth.Api.Controllers
         [HttpGet("{email}")]
         public async Task<IActionResult> Account([Required][EmailAddress]string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+            var account = await _userManager.FindByEmailAsync(email);
+            if (account == null)
             {
                 return NotFound();
             }
 
             return Ok(new AccountGetViewModel()
             {
-                Id = user.Id,
-                Email = user.Email
+                Id = account.Id,
+                Email = account.Email,
+                UserName = account.UserName
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Account([FromBody]NewAccountViewModel viewModel)
+        public async Task<IActionResult> Account([Required]NewAccountViewModel viewModel)
         {
             var account = await _userManager.FindByEmailAsync(viewModel.Email);
             if (account != null)
@@ -63,7 +65,8 @@ namespace MySound.Auth.Api.Controllers
             return Ok(new AccountGetViewModel()
             {
                 Id = account.Id,
-                Email = account.Email
+                Email = account.Email,
+                UserName = account.UserName
             });
         }
     }

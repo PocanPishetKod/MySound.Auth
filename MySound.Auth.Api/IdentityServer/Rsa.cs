@@ -7,7 +7,7 @@ namespace MySound.Auth.Api.IdentityServer
     {
         public static RsaSecurityKey GenerateKeys() 
         {
-            var provider = new RSACryptoServiceProvider(2048);
+            var provider = RSA.Create(2048);
             return new RsaSecurityKey(provider);
         }
     }
