@@ -32,7 +32,7 @@ namespace MySound.Auth.Api.ServiceConfiguration
                 }
             });
             
-            services.AddIdentity<User, IdentityRole>(options => 
+            services.AddIdentity<Account, IdentityRole>(options => 
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 2;

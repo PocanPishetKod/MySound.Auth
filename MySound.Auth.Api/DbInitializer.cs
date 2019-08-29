@@ -18,11 +18,11 @@ namespace MySound.Auth.Api
         private readonly PersistedGrantDbContext _persistedGrantDbContext;
         private readonly AuthDbContext _userDbContext;
         private readonly Config _config;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Account> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public DbInitializer(ConfigurationDbContext configurationDbContext, PersistedGrantDbContext persistedGrantDbContext,
-            AuthDbContext userDbContext, Config config, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+            AuthDbContext userDbContext, Config config, UserManager<Account> userManager, RoleManager<IdentityRole> roleManager)
         {
             _config = config;
             _configurationDbContext = configurationDbContext;
@@ -57,7 +57,7 @@ namespace MySound.Auth.Api
                     var user = _userManager.FindByNameAsync("admin").Result;
                     if (user == null)
                     {
-                        user = new User()
+                        user = new Account()
                         {
                             UserName = "admin",
                             Email = "themarcus77@yandex.ru"

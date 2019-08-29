@@ -12,9 +12,9 @@ namespace MySound.Auth.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase 
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Account> _userManager;
 
-        public AccountController(UserManager<User> userManager)
+        public AccountController(UserManager<Account> userManager)
         {
             _userManager = userManager;
         }
@@ -38,19 +38,19 @@ namespace MySound.Auth.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Account([FromBody]NewAccountViewModel viewModel)
         {
-            var user = await _userManager.FindByEmailAsync(viewModel.Email);
-            if (user != null)
+            var account = await _userManager.FindByEmailAsync(viewModel.Email);
+            if (account != null)
             {
                 return Conflict();
             }
 
-            user = new User()
+            account = new Account()
             {
                 Email = viewModel.Email,
                 UserName = viewModel.UserName
             };
 
-            var result = await _userManager.CreateAsync(user, viewModel.Password);
+            var result = await _userManager.CreateAsync(account, viewModel.Password);
             if (!result.Succeeded)
             {
                 return BadRequest(result.Errors.Select(x => new 
@@ -62,8 +62,8 @@ namespace MySound.Auth.Api.Controllers
 
             return Ok(new AccountGetViewModel()
             {
-                Id = user.Id,
-                Email = user.Email
+                Id = account.Id,
+                Email = account.Email
             });
         }
     }

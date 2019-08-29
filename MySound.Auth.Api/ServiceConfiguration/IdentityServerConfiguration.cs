@@ -26,7 +26,7 @@ namespace MySound.Auth.Api.ServiceConfiguration
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
                 })
-                .AddAspNetIdentity<User>()
+                .AddAspNetIdentity<Account>()
                 .AddConfigurationStore(options =>
                 {
                     if (environment.EnvironmentName.Equals("debug", StringComparison.CurrentCultureIgnoreCase))
